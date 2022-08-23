@@ -10,9 +10,7 @@ import com.example.socketmarket.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.http.Query
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +18,9 @@ class CompanyListingViewModel @Inject constructor(private val repository: StockM
     var state by mutableStateOf(CompanyListingState())
     private var searchJob: Job? = null
 
+    init {
+        getCompanyListings()
+    }
     fun onEvent(event: CompanyListingEvent) {
         when (event) {
             is CompanyListingEvent.Refresh -> {

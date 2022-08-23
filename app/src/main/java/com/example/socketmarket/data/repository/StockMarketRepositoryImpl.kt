@@ -8,19 +8,17 @@ import com.example.socketmarket.data.remote.StockMarketApi
 import com.example.socketmarket.domain.model.CompanyListing
 import com.example.socketmarket.domain.repository.StockMarketRepository
 import com.example.socketmarket.util.Resource
-import com.opencsv.CSVReader
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
-import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class StockMarketRepositoryImpl @Inject constructor (
-    val api: StockMarketApi,
-    val db: StockMarketDatabase,
+    private val api: StockMarketApi,
+    private val db: StockMarketDatabase,
     val companyListingParser: CSVParser<CompanyListing>
         ): StockMarketRepository {
     private val dao = db.dao()
