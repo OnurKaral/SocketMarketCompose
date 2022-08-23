@@ -1,11 +1,15 @@
 package com.example.socketmarket.data.repository
 
 import com.example.socketmarket.data.csv.CSVParser
+import com.example.socketmarket.data.csv.IntraDayInfoParser
 import com.example.socketmarket.data.local.StockMarketDatabase
+import com.example.socketmarket.data.mapper.toCompanyInfo
 import com.example.socketmarket.data.mapper.toCompanyListing
 import com.example.socketmarket.data.mapper.toCompanyListingEntity
 import com.example.socketmarket.data.remote.StockMarketApi
+import com.example.socketmarket.domain.model.CompanyInfo
 import com.example.socketmarket.domain.model.CompanyListing
+import com.example.socketmarket.domain.model.IntraDayInfo
 import com.example.socketmarket.domain.repository.StockMarketRepository
 import com.example.socketmarket.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -19,8 +23,10 @@ import javax.inject.Singleton
 class StockMarketRepositoryImpl @Inject constructor (
     private val api: StockMarketApi,
     private val db: StockMarketDatabase,
-    val companyListingParser: CSVParser<CompanyListing>
-        ): StockMarketRepository {
+    val companyListingParser: CSVParser<CompanyListing>,
+    val intraDayInfoParser: CSVParser<IntraDayInfo>
+
+): StockMarketRepository {
     private val dao = db.dao()
 
     override suspend fun getCompanyListings(
@@ -66,6 +72,33 @@ class StockMarketRepositoryImpl @Inject constructor (
 
 
             }
+        }
+    }
+
+    override suspend fun getIntraDayInfo(symbol: String): Resource<List<IntraDayInfo>> {
+        return try {
+            val response = api.getIntraDayInfo(symbol)
+            val result = intraDayInfoParser.parse(response.byteStream())
+            Resource.Success(result)
+        }catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error("Error fetching intra day info")
+        }catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error("Error fetching intra day info")
+        }
+    }
+
+    override suspend fun getCompanyInfo(symbol: String): Resource<CompanyInfo> {
+        return try {
+            val response = api.getCompanyInfo(symbol)
+            Resource.Success(response.toCompanyInfo())
+        }catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error("Error fetching intra day info")
+        }catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error("Error fetching intra day info")
         }
     }
 }
