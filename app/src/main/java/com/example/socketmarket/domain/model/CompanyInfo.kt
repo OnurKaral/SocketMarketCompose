@@ -1,6 +1,5 @@
 package com.example.socketmarket.domain.model
 
-import com.squareup.moshi.Json
 
 data class CompanyInfo(
      val symbol: String,
@@ -8,5 +7,4 @@ data class CompanyInfo(
      val name: String,
      val country: String,
      val industry: String,
-
     )

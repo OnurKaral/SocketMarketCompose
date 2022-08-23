@@ -2,7 +2,6 @@ package com.example.socketmarket.data.csv
 
 import com.example.socketmarket.data.mapper.toIntraDayInfo
 import com.example.socketmarket.data.remote.dto.IntraDayInfoDto
-import com.example.socketmarket.domain.model.CompanyListing
 import com.example.socketmarket.domain.model.IntraDayInfo
 import com.opencsv.CSVReader
 import kotlinx.coroutines.Dispatchers

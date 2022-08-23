@@ -1,7 +1,6 @@
 package com.example.socketmarket.data.repository
 
 import com.example.socketmarket.data.csv.CSVParser
-import com.example.socketmarket.data.csv.IntraDayInfoParser
 import com.example.socketmarket.data.local.StockMarketDatabase
 import com.example.socketmarket.data.mapper.toCompanyInfo
 import com.example.socketmarket.data.mapper.toCompanyListing
@@ -95,10 +94,10 @@ class StockMarketRepositoryImpl @Inject constructor (
             Resource.Success(response.toCompanyInfo())
         }catch (e: IOException) {
             e.printStackTrace()
-            Resource.Error("Error fetching intra day info")
+            Resource.Error("Error fetching company info")
         }catch (e: HttpException) {
             e.printStackTrace()
-            Resource.Error("Error fetching intra day info")
+            Resource.Error("Error fetching company info")
         }
     }
 }
